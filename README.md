@@ -3,6 +3,8 @@ JSON Metadata Agent for Plex
 
 A metadata agent for Plex that reads from JSON files co-located with your media.
 
+It currently only supports audiobooks and I do not intend to add support for other file types for now.
+
 
 Why?
 ----
