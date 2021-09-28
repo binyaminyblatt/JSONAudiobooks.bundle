@@ -23,50 +23,36 @@ It's designed to work alongside other tools and methods of collecting metadata, 
 Media Preperation
 -----------------
 
-At the time of writing, JSON metadata is supported *for movies only*.
+At the time of writing, JSON metadata is supported *for audiobooks only*.
 
 To define metadata for a movie, a JSON file named exactly `Info.json` must be present in the same directory as your movie file(s). For example:
 
 ```
-Movies
-  |- Akira (1988)
-      |- akira.1988.720p.bluray.x264.mp4
+Audiobooks
+  |- Book
+      |- Book.m4b
       |- Info.json
-      |- Poster.jpg
+      |- Cover.jpg
 ```
 
-This means you are limited to a single movie and `Info.json` file per directory.
+This means you are limited to a single Book and `Info.json` file per directory.
 
 
 Example JSON
 ------------
 
-The structure of the `Info.json` file follows as closely as possible that of the `Movie` model defined by Plex itself (although it's basically undocumented). It should look something like this:
+The structure of the `Info.json` file follows as closely as possible that of the `Music` model defined by Plex itself (although it's basically undocumented). It should look something like this:
 
 ```json
 {
-	"title": "Akira",
-    "summary": "Childhood friends Tetsuo and Kaneda are pulled into the...",
-    "year": 1988,
-    "rating": 7.7,
-    "content_rating": "M",
-    "studio": "Bandai Visual Company",
-    "duration": 124,
-    "directors": [
-      "Katsuhiro Ōtomo"
-    ],
-    "roles": [
-    	{
-        	"actor": "Mitsuo Iwata",
-            "role": "Shôtarô Kaneda"
-        },
-    ],
-    "genres": [
-    	"Animation",
-        "Science Fiction"
-    ],
-    "collections": [
-    	"Anime"
-    ]
+	"date": "Book Release Date",
+	"title": "Boook Title",
+	"authors": "Book Author",
+	"series": "Book Series",
+	"narrators": ["Narrator 1", "Narrator 2"],
+	"studio": "Book Publisher",
+	"rating": Rating out of 5,
+	"genres": ["Genre 1", "Genre 2", "Genre 3", "Genre 4"],
+	"description": "Book Description",
 }
 ```
