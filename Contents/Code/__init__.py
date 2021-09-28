@@ -31,21 +31,45 @@ class JSONAgent(Agent.Album):
         
         info = JSON.ObjectFromString(Core.storage.load(path))
 
-        metadata.originally_available_at = Datetime.ParseDate(re.sub(r'(\d)(st|nd|rd|th)', r'\1', info['date']))
-        metadata.title = info['title']
-        media.artist = info['authors']
+        try: metadata.originally_available_at = Datetime.ParseDate(info['date'])
+        except:
+            pass
+
+        try: metadata.title = info['title']
+        except:
+            pass
+
+        try: media.artist = info['authors']
+        except:
+            pass
+
         metadata.moods.clear()
-        metadata.moods.add(info['series'])
+        try: metadata.moods.add(info['series'])
+        except:
+            pass
         
         metadata.genres.clear()
-        for g in info['narrators']:
-            metadata.styles.add(g)
+        try:
+            for g in info['narrators']:
+                metadata.styles.add(g)
+        except:
+            pass
             
-        metadata.studio = info['studio']
-        metadata.rating = float(info['rating']) * 2
+        try: metadata.studio = info['studio']
+        except:
+            pass
+
+        try: metadata.rating = float(info['rating']) * 2
+        except:
+            pass
         
         metadata.genres.clear()
-        for g in info['genres']:
-            metadata.genres.add(g)
+        try:
+            for g in info['genres']:
+                metadata.genres.add(g)
+        except:
+            pass
             
-        metadata.summary = info['description']
+        try: metadata.summary = info['description']
+        except:
+            pass
