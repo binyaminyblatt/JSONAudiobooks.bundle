@@ -1,80 +1,75 @@
-import os, json
+import os, json, urllib, re
 
-class JSONAgent(Agent.Movies):
+class JSONAgent(Agent.Artist):
     name = 'JSON Metadata'
-    languages = [Locale.Language.NoLanguage]
-    primary_provider = False
+    languages = [Locale.Language.English]
+    primary_provider = True
     persist_stored_files = False
-    contributes_to = ['com.plexapp.agents.none']
+    accepts_from = ['com.plexapp.agents.localmedia']
 
     def search(self, results, media, lang):
-        part = media.items[0].parts[0]
-        path = os.path.join(os.path.dirname(part.file), 'Info.json')
+        return
+        
+    def update(self, metadata, media, lang):
+        return
+
+class JSONAgent(Agent.Album):
+    name = 'JSON Metadata'
+    languages = [Locale.Language.English]
+    primary_provider = True
+    persist_stored_files = False
+    accepts_from = ['com.plexapp.agents.localmedia']
+
+    def search(self, results, media, lang):
+        path = os.path.join(os.path.dirname(urllib.unquote_plus(media.filename)), 'Info.json')
 
         if os.path.exists(path):
-            results.Append(MetadataSearchResult(id = 'null', score = 100))
+            results.Append(MetadataSearchResult(id = path, name=media.album, score = 100, lang=lang))
 
     def update(self, metadata, media, lang):
-        part = media.items[0].parts[0]
-        path = os.path.join(os.path.dirname(part.file), 'Info.json')
-
-        info = json.loads(Core.storage.load(path))
-
-        try: metadata.title = info['title']
+        path = metadata.id
+        
+        info = JSON.ObjectFromString(Core.storage.load(path))
+        Log('----------------------------------Album Update--------------------------------------------------')
+        try: Log(Core.storage.load(path))
         except: pass
-
-        try: metadata.summary = info['summary']
+        try: Log(re.sub(r'(\d)(st|nd|rd|th)', r'\1', info['date']))
         except: pass
-
-        try: metadata.year = info['year']
+        try: Log(Datetime.ParseDate(re.sub(r'(\d)(st|nd|rd|th)', r'\1', info['date'])))
         except: pass
-
-        try: metadata.rating = info['rating']
+        try: Log(info['title'])
         except: pass
-
-        try: metadata.content_rating = info['content_rating']
+        try: Log(info['authors'])
         except: pass
-
-        try: metadata.studio = info['studio']
+        try: Log(info['series'])
         except: pass
-
-        try: metadata.duration = info['duration']
+        try: Log(info['narrators'])
         except: pass
+        try: Log(info['studio'])
+        except: pass
+        try: Log(float(info['rating']) * 2)
+        except: pass
+        try: Log(info['genres'])
+        except: pass
+        try: Log(info['description'])
+        except: pass
+        Log('------------------------------------------------------------------------------------------------')
 
-        metadata.directors.clear()
-
-        try:
-            for d in info['directors']:
-                metadata.directors.add(d)
-        except:
-            pass
-
+        metadata.originally_available_at = Datetime.ParseDate(re.sub(r'(\d)(st|nd|rd|th)', r'\1', info['date']))
+        metadata.title = info['title']
+        media.artist = info['authors']
+        metadata.moods.clear()
+        metadata.moods.add(info['series'])
+        
         metadata.genres.clear()
-
-        try:
-            for g in info['genres']:
-                metadata.genres.add(g)
-        except:
-            pass
-
-        metadata.roles.clear()
-
-        try:
-            for r in info['roles']:
-                role = metadata.roles.new()
-
-                try: role.actor = r['actor']
-                except: pass
-
-                try: role.role = r['role']
-                except: pass
-        except:
-            pass
-
-        metadata.collections.clear()
-
-        try:
-            for c in info['collections']:
-                metadata.collections.add(c)
-        except:
-            pass
+        for g in info['narrators']:
+            metadata.styles.add(g)
+            
+        metadata.studio = info['studio']
+        metadata.rating = float(info['rating']) * 2
+        
+        metadata.genres.clear()
+        for g in info['genres']:
+            metadata.genres.add(g)
+            
+        metadata.summary = info['description']
