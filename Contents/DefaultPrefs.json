@@ -1,0 +1,9 @@
+[
+    {
+        "id": "logging_level",
+        "label": "Level of plugin logging: ",
+        "type": "enum",
+        "values": ["DEBUG", "INFO", "WARN", "ERROR"],
+        "default": "DEBUG"
+    }
+]

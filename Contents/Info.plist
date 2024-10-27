@@ -5,13 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>JSONAgent</string>
+	<string>JSONAudiobooksAgent</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.plexapp.agents.json</string>
+	<string>com.plexapp.agents.jsonaudiobooks</string>
 	<key>PlexAgentAttributionText</key>
-        <string>
-                Metadata Provided JSON File
-        </string>
+    <string>JSON Audiobooks Metadata</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
